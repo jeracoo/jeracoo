@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <meta name="theme-color" content="#007bff">
     <link rel="icon" href="favicon.ico">
-    <title>Asx Random Stock Picker</title>
+    <title>ASX Random Stock Picker</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Global site tag (gtag.js) - Google Analytics -->
    
@@ -24,7 +24,7 @@
          <div class="col-lg-4">
            <div class="card box-shadow">
              <div class="card-header">
-               <h4 class="my-0 font-weight-normal">Random Stock Picker</h4>
+               <h4 class="my-0 font-weight-normal">ASX Random Stock Picker</h4>
              </div>
              <div class="card-body">
                <h1 id="ticker" class="card-title pricing-card-title">Loading...</h1>
@@ -59,7 +59,6 @@
       let curStock = "";
       newStock();
       document.querySelector("#yahoo").addEventListener('click', () => gtag('event', 'Yahoo', { 'event_category': 'Open', 'event_label': curStock, }));
-      document.querySelector("#robinhood").addEventListener('click', () => gtag('event', 'Robinhood', { 'event_category': 'Open', 'event_label': curStock, }));
       document.querySelector("#refresh").addEventListener('click', () => gtag('event', 'refresh', { 'event_category': 'Stock', 'event_label': curStock, }));
       gtag('event', 'load', { 'event_category': 'Stock', 'event_label': curStock, });
 
