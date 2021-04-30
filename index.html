@@ -65,8 +65,8 @@
         let random = Math.floor(Math.random() * Math.floor(stocks.length));
         curStock = stocks[random];
         document.querySelector("#ticker").innerText = curStock;
-        document.querySelector("#robinhood").href = "https://robinhood.com/stocks/" + curStock;
-        document.querySelector("#yahoo").href = "https://finance.yahoo.com/quote/" + curStock;
+        document.querySelector("#robinhood").href = "https://robinhood.com/stocks/" + curStock.ax;
+        document.querySelector("#yahoo").href = "https://finance.yahoo.com/quote/" + curStock.ax;
       }
     </script>
     
