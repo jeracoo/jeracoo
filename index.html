@@ -59,7 +59,7 @@
       let curStock = "";
       newStock();
       document.querySelector("#yahoo").addEventListener('click', () => gtag('event', 'Yahoo', { 'event_category': 'Open', 'event_label': curStock, }));
-      document.querySelector("#robinhood").addEventListener('click', () => gtag('event', 'Robinhood', { 'event_category': 'Open', 'event_label': curStock, }));
+      
       document.querySelector("#refresh").addEventListener('click', () => gtag('event', 'refresh', { 'event_category': 'Stock', 'event_label': curStock, }));
       gtag('event', 'load', { 'event_category': 'Stock', 'event_label': curStock, });
 
@@ -67,7 +67,6 @@
         let random = Math.floor(Math.random() * Math.floor(stocks.length));
         curStock = stocks[random];
         document.querySelector("#ticker").innerText = curStock;
-        document.querySelector("#robinhood").href = "https://robinhood.com/stocks/" + curStock;
         document.querySelector("#yahoo").href = "https://finance.yahoo.com/quote/" + curStock +".ax";
       }
     </script>
