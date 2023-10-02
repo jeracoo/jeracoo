@@ -1,6 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="h-100" lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="ASX Random Stock Ticker Generator">
@@ -10,87 +10,112 @@
     <title>ASX Random Stock Picker</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'UA-49223760-7');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-49223760-7');
     </script>
-  </head>
+</head>
 
 <body class="h-100">
-    <div class="container h-100 justify-content-center">
-      <div class="row h-100 card-deck text-center justify-content-center align-items-center">
+<div class="container h-100 justify-content-center">
+    <div class="row h-100 card-deck text-center justify-content-center align-items-center">
         <div class="col-lg-4">
-          <div class="card box-shadow">
-            <div class="card-header">
-              <h4 class="my-0 font-weight-normal">ASX Random Stock Picker</h4>
+            <div class="card box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">ASX Random Stock Picker</h4>
+                </div>
+                <div class="card-body">
+                    <h1 id="ticker" class="card-title pricing-card-title">Loading</h1>
+                    <a id="yahoo" target="_blank" rel="noopener" href="#">Yahoo Finance</a>
+                    <hr>
+                    <input type="button" class="btn btn-lg btn-primary btn-block" id="refresh" value="Refresh"
+                           onclick="newStock()">
+                </div>
             </div>
-            <div class="card-body">
-              <h1 id="ticker" class="card-title pricing-card-title">Loading</h1>
-              <a id="robinhood" target="_blank" rel="noopener" href="#"></a> 
-              <a id="yahoo" target="_blank" rel="noopener" href="#">Yahoo</a>
-              <hr>
-              <input type="button" class="btn btn-lg btn-primary btn-block" id="refresh" value="Refresh" onclick="newStock()">
-            </div>
-          </div>
         </div>
         <span id="foot">
           <small class="col-lg-12 text-center white">
-            <a class="white font-italic" >CYOA_WITH_HITLER
-             
+            <a class="white font-italic">CYOA_WITH_HITLER</a>
           </small>
         </span>
-      </div>
     </div>
-    <script>
-
-    let stocks = []
+</div>
+<script>
+    let stocks = [];
     fetch('./stocks.json')
-    .then(res => res.json())
-    .then((out) => {
-      stocks = out;
-      newStock();
-    })
-    .catch(err => { throw err });
-    
-      let curStock = "";
-      newStock();
-      document.querySelector("#yahoo").addEventListener('click', () => gtag('event', 'Yahoo', { 'event_category': 'Open', 'event_label': curStock, }));
-      
-      document.querySelector("#refresh").addEventListener('click', () => gtag('event', 'refresh', { 'event_category': 'Stock', 'event_label': curStock, }));
-      gtag('event', 'load', { 'event_category': 'Stock', 'event_label': curStock, });
+        .then(res => res.json())
+        .then((out) => {
+            stocks = out;
+            newStock();
+        })
+        .catch(err => {
+            throw err
+        });
 
-      function newStock() {
+    let curStock = "";
+    newStock();
+    document.querySelector("#yahoo").addEventListener('click', () => gtag('event', 'Yahoo', {
+        'event_category': 'Open',
+        'event_label': curStock,
+    }));
+
+    document.querySelector("#refresh").addEventListener('click', () => {
+        newStock();
+        gtag('event', 'refresh', {'event_category': 'Stock', 'event_label': curStock});
+    });
+    gtag('event', 'load', {'event_category': 'Stock', 'event_label': curStock});
+
+    function newStock() {
         let random = Math.floor(Math.random() * Math.floor(stocks.length));
         curStock = stocks[random];
         document.querySelector("#ticker").innerText = curStock;
-        document.querySelector("#yahoo").href = "https://finance.yahoo.com/quote/" + curStock +".ax";
-      }
-    </script>
-    
-    
+        document.querySelector("#yahoo").href = "https://finance.yahoo.com/quote/" + curStock + ".ax";
+        fetchYahooStockPrice(curStock);
+    }
 
-    <style>
+    // Function to fetch stock price from Yahoo Finance API
+    function fetchYahooStockPrice(stockSymbol) {
+        // Replace 'YOUR_API_KEY' with your actual Yahoo Finance API key (if needed)
+        const apiKey = 'YOUR_API_KEY'; // You may or may not need an API key
+
+        // Define the Yahoo Finance API URL for fetching stock data
+        const apiUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${stockSymbol}.AX?period1=0&period2=9999999999&interval=1d&events=history&includeAdjustedClose=true`;
+
+        // Fetch stock data from Yahoo Finance API
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extract the current stock price from the response
+                const stockPrice = data.chart.result[0].meta.regularMarketPrice;
+
+                // Update the stock price display on the webpage
+                document.querySelector("#ticker").innerText = `${curStock} - $${stockPrice.toFixed(2)}`;
+            })
+            .catch(error => console.error('Error fetching stock data:', error));
+    }
+</script>
+<style>
     body {
+        background:
+        radial-gradient(circle farthest-side at 0% 50%, #fb1 23.5%, rgba(240, 166, 17, 0) 0) 21px 30px,
+        radial-gradient(circle farthest-side at 0% 50%, #B71 24%, rgba(240, 166, 17, 0) 0) 19px 30px,
+        linear-gradient(#fb1 14%, rgba(240, 166, 17, 0) 0, rgba(240, 166, 17, 0) 85%, #fb1 0) 0 0,
+        linear-gradient(150deg, #fb1 24%, #B71 0, #B71 26%, rgba(240, 166, 17, 0) 0, rgba(240, 166, 17, 0) 74%, #B71 0, #B71 76%, #fb1 0) 0 0,
+        linear-gradient(30deg, #fb1 24%, #B71 0, #B71 26%, rgba(240, 166, 17, 0) 0, rgba(240, 166, 17, 0) 74%, #B71 0, #B71 76%, #fb1 0) 0 0,
+        linear-gradient(90deg, #B71 2%, #fb1 0, #fb1 98%, #B71 0%) 0 0 #fb1;
+        background-size: 40px 60px;
+    }
 
-      background:
-radial-gradient(circle farthest-side at 0% 50%,#fb1 23.5%,rgba(240,166,17,0) 0)21px 30px,
-radial-gradient(circle farthest-side at 0% 50%,#B71 24%,rgba(240,166,17,0) 0)19px 30px,
-linear-gradient(#fb1 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#fb1 0)0 0,
-linear-gradient(150deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
-linear-gradient(30deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
-linear-gradient(90deg,#B71 2%,#fb1 0,#fb1 98%,#B71 0%)0 0 #fb1;
-background-size: 40px 60px;
-      
-      }
-    #foot{
-      position: absolute; bottom: 10px
+    #foot {
+        position: absolute;
+        bottom: 10px
     }
-    .white{
-      color: white!important;
+
+    .white {
+        color: white !important;
     }
-    </style>
-  </body>
+</style>
+</body>
 </html>
